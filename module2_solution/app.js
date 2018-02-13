@@ -8,45 +8,44 @@ angular.module('ShoppingListCheckOff',[])
 
 ToBuyController.$inject = ['ShoppingListCheckOffService'];
 function ToBuyController(ShoppingListCheckOffService){
-  var toBuyList = this;
+  var toBuy = this;
 
-  toBuyList.items = ShoppingListCheckOffService.getToBuyList();
+  toBuy.items = ShoppingListCheckOffService.getToBuyList();
+  toBuy.checkOff = function ($index) {
 
-  toBuyList.clicked = function()
-  {
-    console.log(ShoppingListCheckOffService.getToBuyList());
-    toBuyList.items = ShoppingListCheckOffService.getToBuyList;
-    console.log(toBuyList.items);
-  };
-
+    ShoppingListCheckOffService.checkOff($index);
+  }
 }
 
 AlreadyBoughtController.$inject = ['ShoppingListCheckOffService'];
 function AlreadyBoughtController(ShoppingListCheckOffService){
-  var alreadyBoughtList = this;
+  var alreadyBought = this;
 
-  alreadyBoughtList.items = ShoppingListCheckOffService.getAlreadyBoughtList;
+  alreadyBought.items = ShoppingListCheckOffService.getAlreadyBoughtList();
 }
 
 function ShoppingListCheckOffService(){
   var service = this;
 
-  var toBuyList = "x";
+  var toBuyList = [{name : "cookies", quantity : "10"},
+                   {name : "breads", quantity : "5"},
+                   {name : "cheeses", quantity : "20"},
+                   {name : "chocolates", quantity : "25"},
+                   {name : "candies", quantity : "15"}];
 
   var alreadyBoughtList = [];
 
-  // service.addToAlreadyBoughtList = function(itemName, itemQuantity){
-  //   var item = {
-  //     name : itemName,
-  //     quantity : itemQuantity
-  //   }
-  //   service.alreadyBoughtList.push(item);
-  // };
+  service.checkOff = function(index){
 
-  // service.getAlreadyBoughtList = function(){
-  //
-  //   return service.alreadyBoughtList;
-  // };
+    var removedItem = toBuyList[index];
+    toBuyList.splice(index, 1);
+    alreadyBoughtList.push(removedItem);
+  };
+
+  service.getAlreadyBoughtList = function(){
+
+     return alreadyBoughtList
+  };
 
   service.getToBuyList = function(){
 
